@@ -1,47 +1,42 @@
-# require "totem"
-require "colorize"
-require "halite"
-
-# todo put in a separate library. it shold go under ./tools for now
 module DockerClient
   def self.pull(image)
-    LOGGING.info "Docker.pull command: #{image}"
+    Log.info { "Docker.pull command: #{image}" }
     status = Process.run("docker pull #{image}",
                          shell: true,
                          output: output = IO::Memory.new,
                          error: stderr = IO::Memory.new)
-    LOGGING.info "Docker.pull output: #{output.to_s}"
-    LOGGING.info "Docker.pull stderr: #{stderr.to_s}"
+    Log.info { "Docker.pull output: #{output.to_s}" }
+    Log.info { "Docker.pull stderr: #{stderr.to_s}" }
     {status: status, output: output, error: stderr}
   end
   def self.exec(command)
-    LOGGING.info "Docker.exec command: #{command}"
+    Log.info { "Docker.exec command: #{command}" }
     status = Process.run("docker exec #{command}",
                          shell: true,
                          output: output = IO::Memory.new,
                          error: stderr = IO::Memory.new)
-    LOGGING.info "Docker.exec output: #{output.to_s}"
-    LOGGING.info "Docker.exec stderr: #{stderr.to_s}"
+    Log.info { "Docker.exec output: #{output.to_s}" }
+    Log.info { "Docker.exec stderr: #{stderr.to_s}" }
     {status: status, output: output, error: stderr}
   end
   def self.cp(copy)
-    LOGGING.info "Docker.cp command: #{copy}"
+    Log.info { "Docker.cp command: #{copy}" }
     status = Process.run("docker cp #{copy}",
                          shell: true,
                          output: output = IO::Memory.new,
                          error: stderr = IO::Memory.new)
-    LOGGING.info "Docker.cp output: #{output.to_s}"
-    LOGGING.info "Docker.cp stderr: #{stderr.to_s}"
+    Log.info { "Docker.cp output: #{output.to_s}" }
+    Log.info { "Docker.cp stderr: #{stderr.to_s}" }
     {status: status, output: output, error: stderr}
   end
   def self.save(image, output_file)
-    LOGGING.info "Docker.save command: docker save #{image} -o #{output_file}"
+    Log.info { "Docker.save command: docker save #{image} -o #{output_file}" }
     status = Process.run("docker save #{image} -o #{output_file}",
                          shell: true,
                          output: output = IO::Memory.new,
                          error: stderr = IO::Memory.new)
-    LOGGING.info "Docker.save output: #{output.to_s}"
-    LOGGING.info "Docker.save stderr: #{stderr.to_s}"
+    Log.info { "Docker.save output: #{output.to_s}" }
+    Log.info { "Docker.save stderr: #{stderr.to_s}" }
     {status: status, output: output, error: stderr}
   end
   ##############################################
@@ -151,43 +146,11 @@ module DockerClient
     else
         resp["tag"] = "latest"
     end
-    LOGGING.info "org/image:tag : #{resp}"
+    Log.info { "org/image:tag : #{resp}" }
     resp
 	end
 
   module Get
-    # TODO remove if not used
-    # def self.image_tags(image_name) 
-    #   LOGGING.info "tags image name: #{image_name}"
-    #   # if image doesn't have a / in it, it has no user and is an official docker reposistory
-    #   # these are prefixed with library/
-    #   # if there are three elements in the array, use the last two elements as the org/image:tag combo
-    #   # if there are two elements in the array, use both elements as the image/tag combo
-    #   if image_name.split("/").size > 2
-    #     image_name = "#{image_name.split("/")[1]}/#{image_name.split("/")[2]}"
-    #   end
-    #   LOGGING.info "org/image:tag : #{image_name}"
-    #   modified_image_with_repo = ((image_name =~ /\//) == nil) ? "library/" + image_name : image_name
-
-    #   #TODO make this work with a local registry, if used in the future
-    #   #TODO make this work with quay, if used in the future
-    #   LOGGING.info "docker halite url: #{"https://hub.docker.com/v2/repositories/#{modified_image_with_repo}/tags/?page_size=100"}"
-    #   docker_resp = Halite.get("https://hub.docker.com/v2/repositories/#{modified_image_with_repo}/tags/?page_size=100", headers: {"Authorization" => "JWT"})
-    #   LOGGING.debug "docker image resp: #{docker_resp}"
-    #   # docker_resp.body.split(" ")
-    #   parsed_json = JSON.parse(docker_resp.body)
-    #   parsed_json["results"].not_nil!.as_a.reduce([] of Hash(String, String)) do |acc, i|
-    #     # always use amd64
-    #     amd64image = i["images"].as_a.find{|x| x["architecture"].as_s == "amd64"}
-    #     Log.debug { "amd64image: #{amd64image}" }
-    #     if amd64image && amd64image["digest"]?
-    #         acc << {"name" => i["name"].not_nil!.as_s, "compressed_distribution_digest" => amd64image["digest"].not_nil!.as_s}
-    #     else
-    #       Log.error { "amd64 image not found in #{i["images"]}" }
-    #       acc
-    #     end
-    #   end
-    # end
     
     def self.image_by_tag(docker_image_list, tag)
       # if image_tag = nil then get latest tag
