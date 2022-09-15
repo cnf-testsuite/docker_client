@@ -1,10 +1,6 @@
 require "../../spec_helper"
-require "colorize"
-require "../../../src/tasks/utils/utils.cr"
-require "../../../src/tasks/prereqs.cr"
+require "../../../src/utils/utils.cr"
 require "../../../src/tasks/utils/system_information/docker.cr"
-require "file_utils"
-require "sam"
 
 describe "Docker" do
 

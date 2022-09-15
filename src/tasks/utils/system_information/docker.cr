@@ -1,6 +1,6 @@
 require "file_utils"
 require "colorize"
-require "totem"
+require "log"
 
 # todo collection in modules similar to ohai:
 # https://github.com/chef/ohai
@@ -37,24 +37,22 @@ end
 
 def docker_global_response(verbose=false)
   docker_response = `docker version`
-  VERBOSE_LOGGING.info docker_response if verbose
+  Log.for("verbose").info { docker_response } if verbose
   docker_response 
 end
 
 def docker_local_response(verbose=false)
   current_dir = FileUtils.pwd 
-  VERBOSE_LOGGING.info current_dir if verbose 
-  docker = "#{current_dir}/#{TOOLS_DIR}/docker/linux-amd64/docker"
-  # docker_response = `#{docker} version`
-  status = Process.run("#{docker} version", shell: true, output: docker_response = IO::Memory.new, error: stderr = IO::Memory.new)
+  Log.for("verbose").info { current_dir } if verbose 
+  status = Process.run("#{local_docker_path} version", shell: true, output: docker_response = IO::Memory.new, error: stderr = IO::Memory.new)
 
-  VERBOSE_LOGGING.info docker_response.to_s if verbose
+  Log.for("verbose").info { docker_response.to_s } if verbose
   docker_response.to_s
 end
 
 def parse_docker_version(docker_response, verbose=false)
   resp = docker_response.match /Version: .*([0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3})/
-  VERBOSE_LOGGING.info resp if verbose
+  Log.for("verbose").info { resp } if verbose
   if resp
     "#{resp && resp.not_nil![1]}"
   else
