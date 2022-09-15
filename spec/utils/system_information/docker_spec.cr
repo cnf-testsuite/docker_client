@@ -5,7 +5,7 @@ require "../../../src/tasks/utils/system_information/docker.cr"
 describe "Docker" do
 
   it "'docker_global_response()' should return the information about the docker installation", tags: ["docker-prereq"]  do
-    (docker_global_response(true)).should contain("Docker Engine")
+    (docker_global_response(true)).should contain("docker-init")
   end
 
   it "'docker_local_response()' should return the information about the docker installation", tags: ["docker-prereq"]  do
