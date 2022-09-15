@@ -1,5 +1,5 @@
 require "./spec_helper"
-require "../utils/docker_client/docker_client.cr"
+require "../docker_client.cr"
 
 describe "DockerClient" do
 

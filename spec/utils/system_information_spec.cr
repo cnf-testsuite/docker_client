@@ -1,6 +1,5 @@
-require "../../spec_helper"
-require "../../../src/utils/utils.cr"
-require "../../../src/tasks/utils/system_information/docker.cr"
+require "../spec_helper"
+require "../../src/utils/system_information.cr"
 
 describe "Docker" do
 

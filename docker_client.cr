@@ -1,3 +1,5 @@
+require "./src/utils/utils.cr"
+
 module DockerClient
   def self.pull(image)
     Log.info { "Docker.pull command: #{image}" }

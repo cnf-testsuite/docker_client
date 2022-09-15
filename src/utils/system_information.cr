@@ -1,6 +1,7 @@
 require "file_utils"
 require "colorize"
 require "log"
+require "./utils.cr"
 
 # todo collection in modules similar to ohai:
 # https://github.com/chef/ohai
