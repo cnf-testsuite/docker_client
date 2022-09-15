@@ -1,6 +1,10 @@
 require "./src/utils/utils.cr"
+require "./src/utils/system_information.cr"
 
 module DockerClient
+  def self.version_info
+    docker_version_info()
+  end
   def self.pull(image)
     Log.info { "Docker.pull command: #{image}" }
     status = Process.run("docker pull #{image}",
