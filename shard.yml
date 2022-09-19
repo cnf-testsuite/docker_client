@@ -7,7 +7,7 @@ authors:
   - Denver Williams <denver@debian.nz>
 
 targets:
-  git:
+  docker_client:
     main: docker_client.cr
 
 crystal: '>= 1.0.0'
