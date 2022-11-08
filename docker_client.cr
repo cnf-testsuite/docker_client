@@ -113,7 +113,7 @@ module DockerClient
       elsif size = 2
         resp["org"] = first_segment
       else
-        LOGGING.error "size of image text should never = 1 or nil: #{fqdn_image_text}"
+        Log.error {"size of image text should never = 1 or nil: #{fqdn_image_text}"}
       end
     else # first segment not a registry
       resp["registry"] = ""
@@ -162,8 +162,8 @@ module DockerClient
       # if image_tag = nil then get latest tag
       modified_tag = tag == nil ? "latest" : tag
       latest_image = docker_image_list.parse("json")["results"].as_a.find{|x|x["name"]=="#{modified_tag}"} 
-      LOGGING.debug "docker parse resp: #{latest_image}"
-      (LOGGING.error "no image found for tag: #{modified_tag}") if latest_image == nil
+      Log.debug { "docker parse resp: #{latest_image}" }
+      (Log.error{"no image found for tag: #{modified_tag}"}) if latest_image == nil
       latest_image 
     end
   end
